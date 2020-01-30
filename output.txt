@@ -1,3 +1,0 @@
-output file: output.txt
-input file: input.txt
-this is the command: nice! 
