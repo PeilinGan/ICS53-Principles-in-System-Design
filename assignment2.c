@@ -205,31 +205,30 @@ int main() {
         }
      }
 
-    if (strcmp(tokens[0], "<") != 0) {
-        int pid;
-        if ((pid = fork()) == 0) {
-            char * argv[] = {inputCommand, NULL};
-            execv(argv[0], argv);
-            exit(0);
-        }
-        else{
-                wait(&pid);
-        }
-        printf("execute file: %s\n", tokens[0]);
-    } else {
-        // getCommands from the input file !!!
-        // maybe will need to parse the line again
-        int pid;
-        if ((pid = fork()) == 0) {
-            char * argv[] = {inputCommand, NULL};
-            execv(argv[0], argv);
-            exit(0);
-        }
-        else{
-                wait(&pid);
-        }
-        printf("execute file: %s\n", tokens[0]);
+    // if (strcmp(tokens[0], "<") != 0) {
+    //     int pid;
+    //     if ((pid = fork()) == 0) {
+    //         char * argv[] = {inputCommand, NULL};
+    //         execv(argv[0], argv);
+    //         exit(0);
+    //     }
+    //     else{
+    //             wait(&pid);
+    //     }
+    //     printf("execute file: %s\n", tokens[0]);
+    // } else {
+
+    // }
+    int pid;
+    if ((pid = fork()) == 0) {
+        char * argv[] = {inputCommand, NULL};
+        execv(argv[0], argv);
+        exit(0);
     }
+    else{
+            wait(&pid);
+    }
+    // printf("execute file: %s\n", tokens[0]);
 
     
 
