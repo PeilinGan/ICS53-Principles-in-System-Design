@@ -1,6 +1,7 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <sys/types.h>
+# include <fcntl.h>
 # include <string.h>
 # include <stdlib.h>
 # include <stdbool.h> 
@@ -166,23 +167,48 @@ int main() {
     if(!strcmp(tokens[0],"quit"))
         printf("quit");
     
-    if(!strcmp(tokens[0],"<"))
-        printf("run executable 0");
+    if(strcmp(tokens[0],"<") != 0)
+        printf("run executable 0\n");
 
     for(int i = index-1; i >=0; i--){
         if(strcmp(tokens[i],">") == 0){
             //output redirect
+            int fd1 ;
+            if ((fd1 = creat(output , 0644)) < 0) {
+                perror("Couldn't open the output file");
+                exit(0);
+            }           
+
+            dup2(fd1, STDOUT_FILENO); // 1 here can be replaced by STDOUT_FILENO
+            close(fd1);
+
             printf("output file: %s\n", tokens[i+1]);
         }
         if(strcmp(tokens[i],"<")== 0){
             //input
             printf("input file: %s\n", tokens[i+1]);    
+
+            // fdo is file-descriptor
+            int fd0;
+            if ((fd0 = open(tokens[i+1], O_RDONLY, 0)) < 0) {
+                perror("Couldn't open input file");
+                exit(0);
+            }           
+            // dup2() copies content of fdo in input of preceeding file
+            dup2(fd0, 0); // STDIN_FILENO here can be replaced by 0 
+
+            close(fd0); // necessary
+
+            gets(inputCommand);
+            printf("this is the command: %s \n", inputCommand);
         }
      }
 
     if (strcmp(tokens[0], "<") != 0) {
         printf("execute file: %s\n", tokens[0]);
     }
+
+    
 
     return 1;
 }
