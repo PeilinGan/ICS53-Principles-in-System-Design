@@ -146,6 +146,43 @@ void adventure() {
 }
 
 int main() {
-   adventure();
-   return 1;
+//    adventure();
+    printf("prompt: ");
+    char  inputCommand[250];
+    gets(inputCommand);
+    char * token_p;
+    char * tokens[10];
+    token_p = strtok (inputCommand," ");
+    int index = 0;
+    tokens[0] = token_p;
+    while (token_p != NULL)
+    {
+        index+=1;
+        token_p = strtok (NULL, " ");
+        tokens[index] = token_p;
+    }
+
+
+    if(!strcmp(tokens[0],"quit"))
+        printf("quit");
+    
+    if(!strcmp(tokens[0],"<"))
+        printf("run executable 0");
+
+    for(int i = index-1; i >=0; i--){
+        if(strcmp(tokens[i],">") == 0){
+            //output redirect
+            printf("output file: %s\n", tokens[i+1]);
+        }
+        if(strcmp(tokens[i],"<")== 0){
+            //input
+            printf("input file: %s\n", tokens[i+1]);    
+        }
+     }
+
+    if (strcmp(tokens[0], "<") != 0) {
+        printf("execute file: %s\n", tokens[0]);
+    }
+
+    return 1;
 }
