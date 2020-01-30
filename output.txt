@@ -1,2 +1,3 @@
-ls
-cd
+output file: output.txt
+hello
+execute file: hello

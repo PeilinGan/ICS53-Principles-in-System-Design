@@ -153,6 +153,7 @@ int main() {
     gets(inputCommand);
     char * token_p;
     char * tokens[10];
+
     token_p = strtok (inputCommand," ");
     int index = 0;
     tokens[0] = token_p;
@@ -174,7 +175,7 @@ int main() {
         if(strcmp(tokens[i],">") == 0){
             //output redirect
             int fd1 ;
-            if ((fd1 = creat(output , 0644)) < 0) {
+            if ((fd1 = creat(tokens[i+1] , 0644)) < 0) {
                 perror("Couldn't open the output file");
                 exit(0);
             }           
@@ -205,6 +206,28 @@ int main() {
      }
 
     if (strcmp(tokens[0], "<") != 0) {
+        int pid;
+        if ((pid = fork()) == 0) {
+            char * argv[] = {inputCommand, NULL};
+            execv(argv[0], argv);
+            exit(0);
+        }
+        else{
+                wait(&pid);
+        }
+        printf("execute file: %s\n", tokens[0]);
+    } else {
+        // getCommands from the input file !!!
+        // maybe will need to parse the line again
+        int pid;
+        if ((pid = fork()) == 0) {
+            char * argv[] = {inputCommand, NULL};
+            execv(argv[0], argv);
+            exit(0);
+        }
+        else{
+                wait(&pid);
+        }
         printf("execute file: %s\n", tokens[0]);
     }
 
