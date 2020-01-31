@@ -5,12 +5,12 @@
 
 int main() {
    char dungeonInput[121];
-   while (gets(dungeonInput)) {
+   gets(dungeonInput);
         // gets(dungeonInput);
         // if (dungeonInput == NULL) {
         //     break;
         // }
-        printf("%s\n", dungeonInput);
-   }
+   printf("%s\n", dungeonInput);
+
    return 1;
 }
