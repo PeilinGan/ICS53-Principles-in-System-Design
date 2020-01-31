@@ -217,7 +217,6 @@ int main() {
     //     }
     //     printf("execute file: %s\n", tokens[0]);
     // } else {
-
     // }
     int pid;
     if ((pid = fork()) == 0) {
@@ -229,7 +228,6 @@ int main() {
             wait(&pid);
     }
     // printf("execute file: %s\n", tokens[0]);
-
     
 
     return 1;
