@@ -9,7 +9,8 @@
 int main()
 {
     //    adventure();
-    pid_t pid[1000];
+    int pid_array[1000];
+    int bg_child = 0;
     while (true)
     {
         printf("prompt: ");
@@ -77,16 +78,18 @@ int main()
             execvp(argv[0], argv);
             exit(0);
         }
+
+        //foreground, wait for child process
+        else if (strcmp(tokens[index - 1], "&") == 0)
+        {
+            pid_array[bg_child] = pid;
+            bg_child++;
+        }
         else
         {
             wait(&pid);
         }
 
-        //foreground, wait for child process
-        // if (strcmp(tokens[index - 1], "&"))
-        // {
-        //     wait(&pid);
-        // }
         //background, do nothing just continue runing.
     }
 
