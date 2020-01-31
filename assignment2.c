@@ -31,7 +31,23 @@ int main()
         }
         if (!strcmp(tokens[0], "quit"))
         {
-            // printf("quit");
+            int status;
+            for (int i = 0; i < bg_child; i++)
+            {
+                kill(pid_array[i], SIGINT);
+            }
+            for (int i = 0; i < bg_child; i++)
+            {
+                int wpid = wait(&status);
+                if (WIFEXITED(status))
+                {
+                    printf("Child: %d exit with status:%d\n", wpid, WEXITSTATUS(status));
+                }
+                else
+                {
+                    printf("exit abnormally");
+                }
+            }
             break;
         }
 
@@ -58,7 +74,7 @@ int main()
                 if (strcmp(tokens[i], "<") == 0)
                 {
                     //input
-                    printf("input file: %s\n", tokens[i + 1]);
+                    //printf("input file: %s\n", tokens[i + 1]);
 
                     // fdo is file-descriptor
                     int fd0;
