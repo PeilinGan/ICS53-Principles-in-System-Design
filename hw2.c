@@ -75,7 +75,7 @@ int main()
                 }
             }
             char *argv[] = {tokens[0], NULL};
-            execvp(argv[0], argv);
+            execv(argv[0], argv);
             exit(0);
         }
         else if (strcmp(tokens[index - 1], "&") == 0)
