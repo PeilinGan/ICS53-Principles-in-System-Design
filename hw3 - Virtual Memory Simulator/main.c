@@ -101,7 +101,6 @@ int main(int argc, char *argv[])
         }
         if (!strcmp(tokens[0], "quit"))
         {
-            printf("test quit\n");
             break;
         }
 
@@ -130,8 +129,6 @@ int main(int argc, char *argv[])
                     // update page table
                     pageTable[entry][0] = 1;
                     pageTable[entry][2] = avaiablePage;
-                    printf("available page: %d\n", avaiablePage);
-
                     // update main memory
 
                     for (i = 0; i < 4; i++)
@@ -211,7 +208,6 @@ int main(int argc, char *argv[])
                     // update page table
                     pageTable[entry][0] = 1;
                     pageTable[entry][2] = avaiablePage;
-                    printf("available page: %d\n", avaiablePage);
 
                     // update main memory
                     for (i = 0; i < 4; i++)
