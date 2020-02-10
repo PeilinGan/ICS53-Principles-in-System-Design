@@ -28,14 +28,15 @@ void updateMainMemoryPriority(int *mainMemoryPriority, int pageNum)
 }
 
 int findAvailablePage(int pageTable[8][3])
-{
+{   
+    int i;
     int mainMemory[4] = {-1};
-    for (int i = 0; i < 8; i++)
+    for (i = 0; i < 8; i++)
     {
         if (pageTable[i][0] == 1)
             mainMemory[pageTable[i][2]] = 1;
     }
-    for (int i = 0; i < 4; i++)
+    for (i = 0; i < 4; i++)
     {
         if (mainMemory[i] != 1)
             return i;
