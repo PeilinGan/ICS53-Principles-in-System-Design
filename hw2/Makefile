@@ -1,4 +1,4 @@
 all: program
 program: 
-	gcc -o a2 assignment2.c 
+	gcc -o a2 main.c
 	./a2
