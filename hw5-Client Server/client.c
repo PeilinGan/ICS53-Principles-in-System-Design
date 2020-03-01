@@ -17,8 +17,7 @@ int main(int argc, char *argv[])
 
     int port_num = atoi(argv[2]);
 
-    //! <0 ?
-    if ((client_socket = socket(AF_INET, SOCK_STREAM, 0)) == 0)
+    if ((client_socket = socket(AF_INET, SOCK_STREAM, 0)) < 0)
     {
         perror("socket failed");
         exit(EXIT_FAILURE);
@@ -26,7 +25,7 @@ int main(int argc, char *argv[])
 
     server_address.sin_family = AF_INET;
     server_address.sin_port = htons(port_num);
-    if (inet_pton(AF_INET, argv[1], & server_address.sin_addr) <= 0)
+    if (inet_pton(AF_INET, argv[1], &server_address.sin_addr) <= 0)
     {
         printf("\nInvalid address/ Address not supported \n");
         return -1;
@@ -39,5 +38,14 @@ int main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 
+    char buf[MAXLINE];
+    while (fgets(buf, MAXLINE, stdin) != NULL)
+    {
+        write(client_socket, buf, strlen(buf));
+        read(client_socket, buf, strlen(buf));
+        fputs(buf, stdout);
+    }
+
+    close(client_socket);
     return 0;
 }
