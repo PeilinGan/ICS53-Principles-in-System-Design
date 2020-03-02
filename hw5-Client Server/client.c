@@ -3,17 +3,18 @@
 #include <sys/socket.h>
 #include <stdlib.h>
 #include <netinet/in.h>
+#include <netdb.h>
 #include <string.h>
 #include <arpa/inet.h>
+
 int MAXLINE = 200;
 
 int main(int argc, char *argv[])
 {
     int client_socket;
     struct sockaddr_in server_address;
-    memset(&server_address, '0', sizeof(server_address));
-
-    // int server_address_len = sizeof(server_address);
+    struct hostent *hp;
+    struct in_addr ip_addr;
 
     int port_num = atoi(argv[2]);
 
@@ -23,13 +24,20 @@ int main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 
+
     server_address.sin_family = AF_INET;
     server_address.sin_port = htons(port_num);
-    if (inet_pton(AF_INET, argv[1], &server_address.sin_addr) <= 0)
+
+    
+    hp = gethostbyname(argv[1]);
+    ip_addr = *(struct in_addr *)(hp->h_addr);
+    char * ip_address = inet_ntoa(ip_addr);
+    if (inet_pton(AF_INET, ip_address, &server_address.sin_addr) <= 0)
     {
         printf("\nInvalid address/ Address not supported \n");
         return -1;
     }
+
 
     // server_address.sin_addr.s_addr = INADDR_ANY;
     if (connect(client_socket, (struct sockaddr *)&server_address, sizeof(server_address)) < 0)
@@ -40,8 +48,11 @@ int main(int argc, char *argv[])
 
     size_t n;
     char buf[MAXLINE];
+    printf("> ");
     while (fgets(buf, MAXLINE, stdin) != NULL)
     {
+        if(!strcmp(buf,"quit\n"))
+            break;
         char format[256];
         format[0] = (unsigned) strlen(buf);
         format[1] = '\0';
@@ -58,6 +69,7 @@ int main(int argc, char *argv[])
         res[i] = '\0';
         fputs(res, stdout);
         printf("\n");
+        printf("> ");
     }
 
     close(client_socket);
