@@ -38,12 +38,26 @@ int main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 
+    size_t n;
     char buf[MAXLINE];
     while (fgets(buf, MAXLINE, stdin) != NULL)
     {
-        write(client_socket, buf, strlen(buf));
-        read(client_socket, buf, strlen(buf));
-        fputs(buf, stdout);
+        char format[256];
+        format[0] = (unsigned) strlen(buf);
+        format[1] = '\0';
+        strcat(format,buf);
+
+        write(client_socket, format, strlen(format));
+        read(client_socket, buf, MAXLINE);
+        int i;
+        int str_len = (int) buf[0];
+        char res[str_len + 1];
+        for(i = 0;i < str_len; i++){
+            res[i] = buf[i+1];
+        }
+        res[i] = '\0';
+        fputs(res, stdout);
+        printf("\n");
     }
 
     close(client_socket);

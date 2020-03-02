@@ -57,79 +57,49 @@ void echo(int connfd, struct database *db)
     char buf[MAXLINE];
     while ((n = read(connfd, buf, MAXLINE)) != 0)
     {
-        printf("server received %d bytes\n", (int)n);
+        // printf("server received %d bytes\n", (int)n);
+        
+        // parse res 
+        int i;
+        int str_len = (int) buf[0];
+        char client_res[str_len + 1];
+        for(i = 0;i < str_len; i++){
+            client_res[i] = buf[i+1];
+        }
+        client_res[i] = '\0';
+
         char * res = "";
         char *token_p;
         char *tokens[15];
-        token_p = strtok(buf, " ");
+        token_p = strtok(client_res, " ");
         int index = 0;
         tokens[0] = token_p;
+        char format[256];
         while (token_p != NULL)
         {
             index += 1;
             token_p = strtok(NULL, " ");
             tokens[index] = token_p;     
         }
-        // char * game_id;
-        // strcmp(game_id, tokens[0]);
-        // char * field;
-        // strcmp(field, tokens[1]);
-        // field[strlen(field) - 1] = 0;
-
-        // printf("this is the field: %s\n", tokens[1]);
         if (index == 2) {
-            printf("come to 1");
             tokens[1][strlen(tokens[1]) - 1] = 0;
-            printf("%s\n", tokens[1]);
             res = findArray(db, tokens[0], tokens[1]);
+            int res_length = strlen(res);
+            format[0] = (unsigned) res_length;
+            format[1] = '\0';
+            strcat(format, res);
         }
         else {
-            printf("index: %d\n", index);
             res = "unknown";
+            format[0] = (unsigned) strlen(res);
+            format[1] = '\0';
+            strcat(format, res);
         }
-        printf("write back\n");
-        write(connfd, res, n);
+
+        write(connfd, format, strlen(format));
     }
 }
 
-// char read_csv(char *filename)
-// {
-//     FILE *fp = fopen(filename, "r");
-//     char buf[1024];
-
-//     if (!fp)
-//     {
-//         printf("Can't open file\n");
-//         return 1;
-//     }
-
-//     while (fgets(buf, 1024, fp))
-//     {
-//         printf("%s\n", buf);
-//     }
-
-//     fclose(fp);
-// }
-
-// struct database *loadFile(char fileName[100]) {
-//     FILE *fp = fopen(fileName, "r");
-//     char buf[1024];
-//     struct database db[400];
-
-//     if (!fp)
-//     {
-//         printf("Can't open file\n");
-//         return db;
-//     }
-
-//     while (fgets(buf, 1024, fp))
-//     {
-//         printf("%s\n", buf);
-//     }
-
-//     fclose(fp);
-//     return db;
-// }
 
 int main(int argc, char *argv[])
 {
