@@ -16,10 +16,6 @@ int main(int argc, char *argv[])
     struct hostent *hp;
     struct in_addr ip_addr;
 
-    // memset(&server_address, '0', sizeof(server_address));
-
-    // int server_address_len = sizeof(server_address);
-
     int port_num = atoi(argv[2]);
 
     if ((client_socket = socket(AF_INET, SOCK_STREAM, 0)) < 0)
@@ -52,8 +48,11 @@ int main(int argc, char *argv[])
 
     size_t n;
     char buf[MAXLINE];
+    printf("> ");
     while (fgets(buf, MAXLINE, stdin) != NULL)
     {
+        if(!strcmp(buf,"quit\n"))
+            break;
         char format[256];
         format[0] = (unsigned) strlen(buf);
         format[1] = '\0';
@@ -70,6 +69,7 @@ int main(int argc, char *argv[])
         res[i] = '\0';
         fputs(res, stdout);
         printf("\n");
+        printf("> ");
     }
 
     close(client_socket);

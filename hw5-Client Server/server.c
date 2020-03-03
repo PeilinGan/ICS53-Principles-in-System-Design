@@ -87,6 +87,9 @@ void echo(int connfd, struct database *db)
             int res_length = strlen(res);
             format[0] = (unsigned) res_length;
             format[1] = '\0';
+            if(strcmp(res, "unknown")){
+                printf("%s %s\n",tokens[0],tokens[1]);
+            }
             strcat(format, res);
         }
         else {
@@ -170,7 +173,8 @@ int main(int argc, char *argv[])
         perror("listen");
         exit(EXIT_FAILURE);
     }
-    printf("The server is listening on port %d\n", port_num);
+    printf("server started\n");
+
 
     while (1)
     {
@@ -183,9 +187,6 @@ int main(int argc, char *argv[])
         echo(new_socket, db);
         close(new_socket);
     }
-
-    printf("end\n");
-
     close(server_fd);
     return 0;
 }
