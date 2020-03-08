@@ -1,5 +1,5 @@
 all: compile run 
 compile: 
-	gcc -o out main.c
+	gcc -o out main.c 
 run:
 	./out
