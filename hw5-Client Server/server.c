@@ -128,7 +128,7 @@ int main(int argc, char *argv[])
             i++;
             continue;
         }
-        // printf("%s\n", buf);
+
         char *token = strtok(buf, ",");
         strcpy(db[i].type, token);
         token = strtok(NULL, ",");
